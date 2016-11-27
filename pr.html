@@ -8,6 +8,63 @@
 <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
 <link href="./stylesheets/default.css" rel="stylesheet" type="text/css" media="all" />
 <link href="./stylesheets/fonts.css" rel="stylesheet" type="text/css" media="all" />
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+google.load("feeds", "1");
+function initialize() {
+  var feed = new google.feeds.Feed("https://medium.com/feed/@KoheiItoNishitani");
+    feed.load(function(rss) {
+    // feed.load(function(result) {
+
+    if (!result.error) {
+      var channel = new Array();
+      var entry = new Array();
+
+      channel['title'] = rss.feed.title;
+      channel['link'] = rss.feed.link;
+      channel['description'] = rss.feed.description;
+      channel['author'] = rss.feed.author;
+
+      for (var i=0; i<rss.feed.entries.length; i++){
+        entry[i] = {
+        title : rss.feed.entries[i].title,
+        link : rss.feed.entries[i].link,
+        content : rss.feed.entries[i].content,
+        contentSnippet : rss.feed.entries[i].contentSnippet,
+        publishedDate : rss.feed.entries[i].publishedDate
+      };
+      // entry[i]['img'] = rss.feed.entries[i].content.match(/src="(.*?)"/igm);
+
+      var Feed = '<h2>n'
+      + '<a href="' + channel['link'] + '">' + channel['title'] + '</a>n'
+      + '</h2>n'
+      + '<img width="195" src="' + entry[0]['img'][0] + '">'
+      + '<h3>n'
+      + '<a href="'+ entry[0]['link'] + '">' + entry[0]['title'] + '</a>n'
+      + '</h3>n'
+      + '<p>' + entry[0]['contentSnippet'].substr(0, 100) + '……</p>nn';
+      // 表示するタグに追加
+      $('#topics').append( Feed );
+      }
+
+
+
+
+      /*
+      var container = document.getElementById("feed");
+      for (var i = 0; i < result.feed.entries.length; i++) {
+        var entry = result.feed.entries[i];
+        var div = document.createElement("div");
+        div.appendChild(document.createTextNode(entry.title));
+        container.appendChild(div);
+
+      }*/
+    }
+  });
+}
+google.setOnLoadCallback(initialize);
+</script>
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
 </head>
 
@@ -29,6 +86,9 @@
 			</ul>
 		</div>
 </div>
+
+<div id="topics"></div>
+
 <div id="wrapper">
 	<div id="featured-wrapper">
 				<div class="hexagon"><span class="icon icon-envelope"></span></div>
@@ -37,6 +97,11 @@
         </ul>
 	</div>
 </div>
+
+<h1>Google Feed APIのサンプル</h1>
+<!-- RSSを表示するタグ -->
+<div id="topics"></div>
+
 <div id="copyright" class="container">
 	<p>&copy; Data Probono. All rights reserved. | Photos by <a href="http://fotogrph.com/">Fotogrph</a> | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
 </div>
